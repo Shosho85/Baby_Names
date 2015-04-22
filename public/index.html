@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> Baby Name!!! </title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<script src="js/app.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<h1 id="heading"> Name that baby...</h1>	
+
+	<br>
+	<div>
+		<h3 id="paragraph">
+			...<!-- Haven't decided on a baby name yet? Can't think of the perfect name for the new addition to your family? Well I can help you with that. 
+			Name that baby is the place to discover the perfect name that you have been searching for. You can narrow your search by up to three syllables so that you can pick the names that you like with the meanings you prefer. --> 
+		</h3>
+	</div>
+
+	<div id="search-form">
+		<input type="text" id="search-input" placeholder="Enter a syllable">
+		<button id="search-button"> Search </button>
+	</div>
+
+
+	<section id="session"></section>
+	<hr>
+	<div id="signup-div">
+		<!-- Sign Up template -->
+		<h2> Sign up </h2>
+		<template id="signup-template">
+			<input type="text" id="signup-username" placeholder="Username">
+			<input type="password" id="signup-password" placeholder="Password">
+			<button id="signup-button"> Sign Up </button>
+		</template>
+	</div>
+
+
+
+	<div id="login-div">
+		<!-- Log In template -->
+		<h2> Log In <h2>
+		<template id="login-template">
+			<input type="text" id="login-username" placeholder="Username">
+			<input type="password" id="login=password" placeholder="Password">
+			<button id="login-button"> Log In </button>	
+		</template>
+	</div>
+
+	<div>
+		<template>
+			<p id="current-user" data-userid= {{id}} data-username={{username}}>
+				Hello {{username}} </p>
+			<button id="logout-button"> Log Out </button>
+		</template>
+	</div>
+
+
+
+<!-- 	<hr> -->
+
+</body>
+</html>
