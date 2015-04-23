@@ -11,7 +11,7 @@ module.exports = {
       username: {
         type: DataTypes.STRING
       },
-      password: {
+      password_digest: {
         type: DataTypes.INTEGER
       },
       createdAt: {

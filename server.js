@@ -5,6 +5,9 @@ var models = require('./models');
 var session = require('express-session');
 var bcrypt = require('bcrypt');
 
+var request = require('request');
+var cheerio = require('cheerio');
+
 var User = models.users;
 var Babyname = models.babynames;
 var Description = models.descriptions;
@@ -38,6 +41,7 @@ var authenticate = function(req, res, next) {
 
 
 
+
 //-----------endpoints for USERS----------------
 //index
 app.get('/users', function(req, res) {
@@ -53,22 +57,30 @@ app.get('/users/:id', function(req, res) {
 	User
 		.findOne({
 			where: { id: req.params.id },
-			include: [Babynames]
+			include: [Babyname]
 		})
 		.then(function(userBabynames) {
 			res.send(userBabynames);
 		});
 });
 
+// app.post('/users/:id/babynames', authenticate, restrictAccess, function(req, res) {
+// 	Babyname
+// 		.create({
+// 			babyname: req.body.babyname,
+// 			user_id: req.params.id
+// 		})
+// 		.then(function(babyname) {
+// 			res.send(babyname);
+// 		});
+// });
+
 //create
 app.post('/users', function(req, res) {
-	var username = req.body.username;
-	var password = req.body.password;
-
-	bcrypt.hash(password, 10, function(err, hash) {
+	bcrypt.hash(req.body.password, 10, function(err, hash) {
 		User
 			.create({
-				username: username,
+				username: req.body.username,
 				password_digest: hash
 			})
 			.then(function(user) {
@@ -77,6 +89,16 @@ app.post('/users', function(req, res) {
 	});
 });
 
+// app.post('/users', function(req, res) {
+// 	User
+// 		.create(req.body)
+// 		.then(function(newUser) {
+// 			res.send(newUser);
+// 		});
+// });
+
+
+//update
 app.put('/users/:id', function(req, res) {
 	User
 		.findOne(req.params.id)
@@ -107,7 +129,9 @@ app.delete('/users/:id', function(req, res) {
 //index
 app.get('/babynames', function(req, res) {
 	Babyname
-		.findAll()
+		.findAll({
+			include: [Description]
+		})
 		.then(function(babynames) {
 			res.send(babynames);
 		});
@@ -121,7 +145,7 @@ app.get('/babynames/:id', function(req, res) {
 			include: [Description]
 		})
 		.then(function(babynameDescription) {
-			res.send(babynameDescription.descriptions);
+			res.send(babynameDescription);
 		});
 });
 
@@ -144,6 +168,62 @@ app.delete('/babynames/:id', function(req, res) {
 				.destroy()
 				.then(function(destroyedBabyname) {
 					res.send(desroyedBabyname);
+				});
+		});
+});
+//--------------------------------------------------
+
+//-----------endpoints for DESCRIPTIONS----------------
+
+//index
+app.get('/descriptions', function(req, res) {
+	Description
+		.findAll()
+		.then(function(descriptions) {
+			res.send(descriptions);
+		});
+});
+
+//show
+app.get('/descriptions/:id', function(req, res) {
+	Description
+		.findOne(req.params.id)
+		.then(function(description) {
+			res.send(description);
+		});
+});
+
+//create
+app.post('/descriptions', function(req, res) {
+	Description
+		.create(req.body)
+		.then(function(newDescription) {
+			res.send(newDescription);
+		});
+});
+
+//update
+app.put('/descriptions/:id', function(req, res) {
+	Description
+		.findOne(req.params.id)
+		.then(function(description) {
+			description
+				.update(req.body)
+				.then(function(updatedDescription) {
+					res.send(updatedDescription);
+				});
+		});
+});
+
+//delete
+app.delete('/descriptions/:id', function(req, res) {
+	Description
+		.findOne(req.params.id)
+		.then(function(description) {
+			description
+				.destroy()
+				.then(function(destroyedDescription) {
+					res.send(destroyedDescription);
 				});
 		});
 });
@@ -239,8 +319,17 @@ app.get('/current_user', function(req, res) {
 });
 //-------------------------------------
 
-
-
+//using routes to render all baby names from the site
+app.get('/babynamesearch', function(req, res) {
+	// var name = req.params.name;
+	request('http://www.baby-names-and-stuff.com/search/?advanced=1&criteria=3&minletter=0&maxletter=0&srchtype=0&orgn=&gndr=0&q=sho&button.x=0&button.y=0&button=Sign+In', function(error, response, body) {
+		Babyname
+			.findAll()
+			.then(function(babynames) {
+				res.send(babynames);
+			});
+	});
+});
 
 
 

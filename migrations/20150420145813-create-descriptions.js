@@ -12,7 +12,7 @@ module.exports = {
         type: DataTypes.STRING
       },
       gender: {
-        type: DataTypes.BOOLEAN
+        type: DataTypes.STRING
       },
       origin: {
         type: DataTypes.STRING

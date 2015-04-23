@@ -3,18 +3,93 @@ var loginTemplate;
 var userTemplate;
 
 $(function() {
+	console.log('Loaded');
+
+	this.template = Handlebars.compile($('#babyname-template').html());
+
+	$('body').on('click', '#search-button', searchName);
+	$('body').on('click', '#signup-button', signupUser);
+	$('body').on('click', '#login-button', login);
+
 	signupTemplate = Handlebars.compile($('#signup-template').html());
 	loginTemplate = Handlebars.compile($('#login-template').html());
 	userTemplate = Handlebars.compile($('#user-template').html());
 
 	fetchAndRenderUsers();
 	fetchAndRenderSession();
+	
 
-	$('body').on('click', '#signup-button', signupUser);
-	$('body').on('click', '#login-button', login);
 
-	// $('body').on('click', '#search-button', executeSearch);
+
 });
+
+
+//SEARCH NAME FUNCTION
+// $(function() {
+// 	console.log('Loaded the searchName function');
+// 	$('body').on('click', '#search-button', searchName);
+
+// });
+
+// var searchName = function() {
+// 	var userInput1 = $('#search-input').val();
+// 	$.ajax({
+// 		url: 'http://www.baby-names-and-stuff.com/search/?advanced=1&criteria=3&minletter=0&maxletter=0&srchtype=0&orgn=&gndr=0&q=' + userInput1,
+// 		method: 'GET',
+// 		dataType: 'jsonp'
+// 	}).done(function(){
+// 		if (!error && response.statusCode == 200) {
+// 			var $ = cheerio.load(html);
+// 			$('div.pinkwide1').children().children().each(function(i, element) {
+// 				var a = $(this).text();
+// 				// console.log(a.text());
+// 				console.log(a);
+// 			});
+// 		}
+// 	});
+// };
+
+
+var searchName = function() {
+
+	var userInput = $('#search-input'.input).val();
+
+	var namelist = function() {
+		console.log('Trying to get the list of the babynames');
+
+		var query = 'localhost:3000/babynames';
+
+		$.ajax({
+			url: query,
+			method: 'GET'
+		})
+		.done(function() {
+			
+
+			request('http://www.baby-names-and-stuff.com/search/?advanced=1&criteria=3&minletter=0&maxletter=0&srchtype=0&orgn=&gndr=0&q=' + userInput1 + '&button.x=0&button.y=0&button=Sign+In', function(error, response, html) {
+				if (!error && response.statusCode == 200) {
+					var $ = cheerio.load(html);
+					//------gives me the list of all names but also some 'google ad client' stuff
+					// $('td').children().children().children().children().each(function(i, element) {
+						$('div.pinkwide0').children().children().each(function(i, element) {
+							var a = $(this);
+							var name = a.text().trim();
+							if (name.length) {
+								Babyname
+									.create({
+										babyname: name
+									});
+							} 
+						});
+				};
+			});
+
+
+			
+		})
+	}
+};
+
 
 //----------------------------------------------
 //NOT SURE IF THIS EXECUTE FUNCTION WILL WORK
@@ -47,29 +122,6 @@ $(function() {
 	
 // };
 //-----------------------------------------------
-var userInput = 'sho';
-	
-	request('http://www.baby-names-and-stuff.com/search/?advanced=1&criteria=3&minletter=0&maxletter=0&srchtype=0&orgn=&gndr=0&q=' + userInput + '&button.x=0&button.y=0&button=Sign+In', function(error, response, html) {
-		if (!error && response.statusCode == 200) {
-			var $ = cheerio.load(html);
-			//------gives me the list of all names but also some 'google ad client' stuff
-			// $('td').children().children().children().children().each(function(i, element) {
-				$('div.pinkwide0').children().children().each(function(i, element) {
-					var a = $(this);
-					console.log(a.text());
-				});
-				$('div.pinkwide1').children().children().each(function(i, element) {
-					var a = $(this).text();
-					// console.log(a.text());
-					console.log(a);
-				});
-				// $('div.pinkwide1').children().children().each(function(i, element) {
-				// 	var a = $(this);
-				// 	console.log(a.text());
-				// });
-		}
-	});
-
 
 
 var fetchAndRenderUsers = function() {
@@ -137,4 +189,51 @@ var logout = function() {
 		url: '/sessions', 
 		method: 'DELETE',
 	}).done(fetchAndRenderSession);
-}
+};
+
+
+
+// var userInput1 = 'sho';
+	
+// request('http://www.baby-names-and-stuff.com/search/?advanced=1&criteria=3&minletter=0&maxletter=0&srchtype=0&orgn=&gndr=0&q=' + userInput1 + '&button.x=0&button.y=0&button=Sign+In', function(error, response, html) {
+// 	if (!error && response.statusCode == 200) {
+// 		var $ = cheerio.load(html);
+// 		//------gives me the list of all names but also some 'google ad client' stuff
+// 		// $('td').children().children().children().children().each(function(i, element) {
+// 			$('div.pinkwide0').children().children().each(function(i, element) {
+// 				var a = $(this);
+// 				console.log(a.text());
+// 			});
+// 			// $('div.pinkwide1').children().children().each(function(i, element) {
+// 			// 	var a = $(this).text();
+// 			// 	// console.log(a.text());
+// 			// 	console.log(a);
+// 			// });
+// 			// $('div.pinkwide1').children().children().each(function(i, element) {
+// 			// 	var a = $(this);
+// 			// 	console.log(a.text());
+// 			// });
+// 	};
+// });
+
+// var userInput2 = 'sha';
+// request('http://www.baby-names-and-stuff.com/search/?advanced=1&criteria=3&minletter=0&maxletter=0&srchtype=0&orgn=&gndr=0&q=' + userInput2 + '&button.x=0&button.y=0&button=Sign+In', function(error, response, html) {
+// 	if (!error && response.statusCode == 200) {
+// 		var $ = cheerio.load(html);
+// 		//------gives me the list of all names but also some 'google ad client' stuff
+// 		// $('td').children().children().children().children().each(function(i, element) {
+// 			// $('div.pinkwide0').children().children().each(function(i, element) {
+// 			// 	var a = $(this);
+// 			// 	console.log(a.text());
+// 			// });
+// 			$('div.pinkwide1').children().children().each(function(i, element) {
+// 				var a = $(this).text();
+// 				// console.log(a.text());
+// 				console.log(a);
+// 			});
+// 			// $('div.pinkwide1').children().children().each(function(i, element) {
+// 			// 	var a = $(this);
+// 			// 	console.log(a.text());
+// 			// });
+// 	};
+// });

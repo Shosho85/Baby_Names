@@ -2,13 +2,13 @@
 module.exports = function(sequelize, DataTypes) {
   var descriptions = sequelize.define("descriptions", {
     meaning: DataTypes.STRING,
-    gender: DataTypes.BOOLEAN,
+    gender: DataTypes.STRING,
     origin: DataTypes.STRING,
     babyname_id: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
-        descriptions.belongsTo(models.babynames, { foriegnKey: 'babyname_id' })
+        descriptions.belongsTo(models.babynames, { foreignKey: 'babyname_id' });
       }
     }
   });
