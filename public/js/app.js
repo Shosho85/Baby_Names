@@ -5,7 +5,7 @@ var userTemplate;
 $(function() {
 	console.log('Loaded');
 
-	this.template = Handlebars.compile($('#babyname-template').html());
+	// this.template = Handlebars.compile($('#babyname-template').html());
 
 	$('body').on('click', '#search-button', searchName);
 	$('body').on('click', '#signup-button', signupUser);
@@ -18,9 +18,6 @@ $(function() {
 	fetchAndRenderUsers();
 	fetchAndRenderSession();
 	
-
-
-
 });
 
 
@@ -52,42 +49,64 @@ $(function() {
 
 var searchName = function() {
 
-	var userInput = $('#search-input'.input).val();
+	// var userInput = $('#search-input').val();
 
-	var namelist = function() {
 		console.log('Trying to get the list of the babynames');
 
-		var query = 'localhost:3000/babynames';
+		var query = 'http://localhost:3000/babynames';
 
 		$.ajax({
 			url: query,
-			method: 'GET'
+			method: 'GET',
+			dataType: 'json',
+			data: {
+				'babyname': 'all'
+			},
 		})
-		.done(function() {
+		.then(function (babynames) {
+			console.log(babynames);
+
+			$('#namelist').append('LIST OF NAMES');
 			
+			for (var i = 0; i < 10; i++ ) {
 
-			request('http://www.baby-names-and-stuff.com/search/?advanced=1&criteria=3&minletter=0&maxletter=0&srchtype=0&orgn=&gndr=0&q=' + userInput1 + '&button.x=0&button.y=0&button=Sign+In', function(error, response, html) {
-				if (!error && response.statusCode == 200) {
-					var $ = cheerio.load(html);
-					//------gives me the list of all names but also some 'google ad client' stuff
-					// $('td').children().children().children().children().each(function(i, element) {
-						$('div.pinkwide0').children().children().each(function(i, element) {
-							var a = $(this);
-							var name = a.text().trim();
-							if (name.length) {
-								Babyname
-									.create({
-										babyname: name
-									});
-							} 
-						});
-				};
-			});
+				// Make an p tag with jQuery
+				var p = $('<p>');
+
+				// set the html of the p tag with jQuery to the babyname
+				var names = (babynames[i].babyname);
 
 
-			
-		})
-	}
+				p.html(names);
+				// if ($("(p:contains:sha)")) {
+				// 	$('#namelist').append(p);
+				// }
+				// append the p tag to the body, using jQuery
+				// (p).find('sho');
+
+				$('#namelist').append(p);
+
+			}
+
+		});
+
+		// .done(function(babyname) {
+		// 	var lengths = $(babyname).map(function() {
+		// 		return this.length;
+		// 	});
+		// 	// request('http://www.baby-names-and-stuff.com/search/?advanced=1&criteria=3&minletter=0&maxletter=0&srchtype=0&orgn=&gndr=0&q=' + userInput1 + '&button.x=0&button.y=0&button=Sign+In', function(error, response, html) {
+		// 	// 	if (!error && response.statusCode == 200) {
+		// 	// 		var $ = cheerio.load(html);
+		// 	// 		//------gives me the list of all names but also some 'google ad client' stuff
+		// 	// 		// $('td').children().children().children().children().each(function(i, element) {
+		// 	// 			$('div.pinkwide0').children().children().each(function(i, element) {
+		// 	// 				var a = $(this);
+		// 	// 				var name = a.text().trim();
+		// 	// 				console.log(name);
+		// 	// 			});
+		// 	// 	}
+		// 	// });
+		// });
 };
 
 

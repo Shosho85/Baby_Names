@@ -9,6 +9,10 @@
 	font-family: comic sans ms;
 }
 
+#search-form {
+	text-align: center;
+}
+
 #signup-div {
 	float: left;
 	border-style: solid;
@@ -33,4 +37,13 @@
 }
 #login {
 	margin-top: 50px;
+}
+
+#namelist {
+	float: right;
+	text-align: center;
+	height: 350px;
+	width: 300px;
+	border-style: solid;
+	text-align: left;
 }

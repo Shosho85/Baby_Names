@@ -16,8 +16,8 @@
 	<br>
 	<div>
 		<h3 id="paragraph">
-			...<!-- Haven't decided on a baby name yet? Can't think of the perfect name for the new addition to your family? Well I can help you with that. 
-			Name that baby is the place to discover the perfect name that you have been searching for. You can narrow your search by up to three syllables so that you can pick the names that you like with the meanings you prefer. --> 
+			Haven't decided on a baby name yet? Can't think of the perfect name for the new addition to your family? <!-- Well I can help you with that.  -->
+			<!-- Name that baby is the place to discover the perfect name that you have been searching for. --> You can specify your search by more than one syllable and pick the names that has one or all of those syllables.
 		</h3>
 	</div>
 
@@ -32,36 +32,37 @@
 	<div id="signup-div">
 		<!-- Sign Up template -->
 		<h2> Sign up </h2>
-		<template id="signup-template">
+		<section id="signup-template">
 			<input type="text" id="signup-username" placeholder="Username">
 			<input type="password" id="signup-password" placeholder="Password">
 			<button id="signup-button"> Sign Up </button>
-		</template>
+		</section>
 	</div>
 
-	<template id="babyname-template"></template>
 
 	<div id="login-div">
 		<!-- Log In template -->
 		<h2> Log In <h2>
-		<template id="login-template">
+		<section id="login-template">
 			<input type="text" id="login-username" placeholder="Username">
 			<input type="password" id="login=password" placeholder="Password">
 			<button id="login-button"> Log In </button>	
-		</template>
+		</section>
 	</div>
 
 	<div>
 		<template>
 			<p id="current-user" data-userid= {{id}} data-username={{username}}>
-				Hello {{username}} </p>
+			<!-- 	Hello {{username}} --> </p>
 			<button id="logout-button"> Log Out </button>
 		</template>
 	</div>
 
-
-
-<!-- 	<hr> -->
+<!-- 	<div id="namelist-div">
+		<section id="namelist"></section>
+	</div>
+ -->
+ 	<div id="namelist"></div>
 
 </body>
 </html>
